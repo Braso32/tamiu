@@ -61,8 +61,9 @@ cy1,cx1=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
 vec=np.array([[cx1],[cy1],[cx1*cy1],[1]])
 
 Coord_Mundo=np.dot(A,vec)
-X_mundo=np.round(Coord_Mundo[0][0],decimals=6)
-Y_mundo=np.round(Coord_Mundo[1][0],decimals=6)
+X_mundo=Coord_Mundo[0][0]
+Y_mundo=Coord_Mundo[1][0]
+
 
 print('Latitud y longitud :\t\n', Coord_Mundo)
 
@@ -77,7 +78,7 @@ if graficoGPS:
 	for dff in dt_frames:
 		df_subt = pd.read_csv(dff)
 	
-		ll = df_subt[['lat','lon']].values
+		ll = df_subt[['lat','lon']].valuesdt_frames[5][58:len(dt_frames[5])]
 		plt.plot(ll.T[0],ll.T[1],'+')
 
 
@@ -85,6 +86,8 @@ if graficoGPS:
 for dff,vidf in zip(dt_frames,videos):
 	
 	print(num, ' de ', len(dt_frames))
+	print(dt_frames[num][58:len(dt_frames[num])])
+	
 	df_subt = pd.read_csv(dff)
 
 	puntosLatLon = (df_subt[['lat','lon']])
@@ -97,7 +100,8 @@ for dff,vidf in zip(dt_frames,videos):
 	index=np.argsort(Dif.abs().values.sum(1))
 	latlon=np.sort(Dif.abs().values.sum(1))
 	indexInt=index[latlon<tol]
-	
+	if(indexInt.size != 0):
+		indexInt=np.random.choice(indexInt,20)
 	#minIndex = Dif.abs().sum(1).idxmin()
 	
 	vidcap = cv2.VideoCapture(vidf)
@@ -110,6 +114,7 @@ for dff,vidf in zip(dt_frames,videos):
 			ret, frame = vidcap.read()
 			f.append(frame)
 	vidcap.release()
+
 	framesInterest.append(f)
 	num+=1
 
@@ -118,7 +123,7 @@ for dff,vidf in zip(dt_frames,videos):
 
 
 
-#%%k
+# %%
 
 for lista in framesInterest:
 	for frame in lista:
@@ -126,7 +131,7 @@ for lista in framesInterest:
 		if len(frame):
 			cv2.imshow('f',cv2.pyrDown(cv2.pyrDown(frame)))
 			if cv2.waitKey(0)==ord('q'):
-				break
+				breakh
 	
 cv2.destroyAllWindows()
 #FrameInteres=vidcap.set(cv2.CAP_PROP_POS_FRAMES,minIndex)
