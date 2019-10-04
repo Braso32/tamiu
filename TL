@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Oct  2 17:26:50 2019
+
+@author: braso
+"""
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+#%% Seleccionar campo 
+img=cv2.imread("/home/braso/Documentos/TAMIU/TAMIUSOULLIER/SCRIPS/gps/fauba_edit.jpg", cv2.IMREAD_GRAYSCALE)
+
+plt.figure('Seleccionar campo de trabajo')
+plt.imshow(img,'gray')
+
+print('esquina superior derecha:\t\n',end=' ')
+y1,x1=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
+print('esquina inferior derecha:\t\n',end=' ')
+y2,x2=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
+print('esquina superior izquierda:\t\n',end=' ')
+y3,x3=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
+
+print('esquina inferior izquierda:\t\n',end=' ')
+y4,x4=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
+
+lisX=[]
+lisX.append(x1)
+lisX.append(x2)
+lisX.append(x3)
+lisX.append(x4)
+lisX.sort()
+
+lisY=[]
+lisY.append(y1)
+lisY.append(y2)
+lisY.append(y3)
+lisY.append(y4)
+lisY.sort()
+
+
+recorte=img[min(lisX):max(lisX),min(lisY):max(lisY)]
+
+#recorte=imgNew.T[x1:x2,y1:y2]
+#
+#recorte = np.uint8(255*(recorte-recorte.min()) / (recorte.max()-recorte.min()))
+
+plt.figure('Campo de trabajo')
+plt.imshow(recorte,'gray')
+
+# %%
+# esquina superior derecha
+lat1=-34.592858
+lon1=-58.484647
+u1=x1
+v1=y1
+
+# esquina inferior derecha
+lat2=-34.593132
+lon2=-58.484638
+u2=x2
+v2=y2
+
+# esquina superior izquierda
+lat3=-34.592870
+lon3=-58.485325
+u3=x3
+v3=y3
+
+# esquina inferior izquierda
+lat4=-34.593144
+lon4=-58.485319
+u4=x4
+v4=y4
+# Se resuleve L=A*X, donde L es una matriz de 2*4, A una matriz de transformaciòn
+# de 2*4 y X es una matriz de 4*4. L contiene las coordenadas en el mundo, y X
+# las coordenadas digitales 
+X = np.array([[u1, u2, u3, u4],[v1, v2, v3, v4],[u1*v1,u2*v2,u3*v3,u4*v4],[1,1,1,1]])
+L=np.array([[lat1, lat2, lat3, lat4],[lon1, lon2, lon3, lon4]])
+X_pinv=np.linalg.pinv(X)
+A=np.dot(L,X_pinv)
+
+p0_l=[u4,v4,lat4,lon4]
+np.save('p0_l.npy',p0_l)
+
+np.save('tl.npy',A)
