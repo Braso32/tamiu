@@ -1,4 +1,3 @@
-# Importar librerias
 
 import cv2
 import glob

@@ -48,7 +48,7 @@ recorte=img[min(lisX):max(lisX),min(lisY):max(lisY)]
 
 plt.figure('Campo de trabajo')
 plt.imshow(recorte,'gray')
-
+plt.imsave("campoCortado.jpg",recorte)
 # %%
 # esquina superior derecha
 lat1=-34.592858

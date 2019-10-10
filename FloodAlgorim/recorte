@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct  8 19:14:48 2019
+
+@author: braso
+"""
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+#%% Seleccionar campo 
+img=cv2.imread("/home/braso/Documentos/TAMIU/TAMIUSOULLIER/SCRIPS/gps/fauba_edit.jpg", cv2.IMREAD_GRAYSCALE)
+
+plt.figure('Seleccionar campo de trabajo')
+plt.imshow(img,'gray')
+
+print('esquina superior derecha:\t\n',end=' ')
+y1,x1=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
+print('esquina inferior derecha:\t\n',end=' ')
+y2,x2=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
+print('esquina superior izquierda:\t\n',end=' ')
+y3,x3=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
+
+print('esquina inferior izquierda:\t\n',end=' ')
+y4,x4=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
+
+lisX=[]
+lisX.append(x1)
+lisX.append(x2)
+lisX.append(x3)
+lisX.append(x4)
+lisX.sort()
+
+lisY=[]
+lisY.append(y1)
+lisY.append(y2)
+lisY.append(y3)
+lisY.append(y4)
+lisY.sort()
+
+
+recorte=img[min(lisX):max(lisX),min(lisY):max(lisY)]
+
+#recorte=imgNew.T[x1:x2,y1:y2]
+#
+#recorte = np.uint8(255*(recorte-recorte.min()) / (recorte.max()-recorte.min()))
+
+plt.figure('Campo de trabajo')
+plt.imshow(recorte,'gray')
+plt.imsave("/home/braso/Documentos/TAMIU/TAMIUSOULLIER/SCRIPS/FloodAlgorim/campoCortado.jpg",recorte)

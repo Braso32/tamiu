@@ -39,11 +39,15 @@ y1,x1=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
 print('esquina 1:\t',end=' ')
 y2,x2=np.array(np.round(plt.ginput()[0]),dtype=np.int32)
 
+
 recorte=imgNew.T[x1:x2,y1:y2]
+
+plt.imsave("/home/braso/Documentos/TAMIU/TAMIUSOULLIER/SCRIPS/FloodAlgorim/santiago.jpg",recorte)
 
 recorte = np.uint8(255*(recorte-recorte.min()) / (recorte.max()-recorte.min()))
 plt.figure()
 plt.imshow(recorte)
+
 
 #%% Una vez recortado busco Bordes CRECIDO
 

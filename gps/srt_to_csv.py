@@ -15,7 +15,7 @@ import glob
 from time import time
 
 
-def srt2csv(path = '/home/ulises/00_Doctorado/MedicionesDrone/FAUBA_190904/'):
+def srt2csv(path = '/home/braso/Documentos/TAMIU/TAMIUSOULLIER/SCRIPS/gps/str'):
 	'''convierte los srt dentro del path en csv'''
 	a0 = time()
 	srtFiles=glob.glob(path+'**/*.SRT')
